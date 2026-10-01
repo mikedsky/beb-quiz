@@ -1391,6 +1391,17 @@ body {
 
   /* 4. QUIZ SCREEN REDESIGN FOR MOBILE (Clean, eye-friendly, thumb-optimized) */
   .quiz-screen {
+    border: 1.5px solid var(--border-color);
+    border-radius: 18px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+    min-height: auto;
+    background: #ffffff;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  body.in-quiz .quiz-screen {
     border: none;
     border-radius: 0;
     box-shadow: none;

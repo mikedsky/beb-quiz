@@ -917,13 +917,13 @@ function renderExamStart(container) {
   }
 
   container.innerHTML = `
-    <div class="quiz-screen exam-start-card">
-      <div class="exam-start-icon">⏱️</div>
-      <h2 class="exam-start-title">
+    <div class="quiz-screen exam-start-card" style="padding:20px 14px; box-sizing:border-box; width:100%; max-width:100%; overflow:hidden;">
+      <div class="exam-start-icon" style="font-size:46px; margin-bottom:10px;">⏱️</div>
+      <h2 class="exam-start-title" style="font-size:20px; line-height:1.3; margin-bottom:8px; text-align:center;">
         Офіційна симуляція тестування БЕБ
       </h2>
-      <p class="exam-start-desc">
-        Повна симуляція комп'ютерного іспиту Конкурсної комісії Бюро економічної безпеки України на знання законодавства (Наказ БЕБ № 378).
+      <p class="exam-start-desc" style="font-size:13px; line-height:1.45; color:var(--text-muted); margin-bottom:16px; text-align:center;">
+        Повна симуляція іспиту Конкурсної комісії Бюро економічної безпеки України на знання законодавства (Наказ БЕБ № 378).
       </p>
 
       ${isLoading ? `
@@ -932,35 +932,64 @@ function renderExamStart(container) {
         </div>
       ` : ''}
 
-      <div class="celebration-stats exam-stats-row">
-        <div class="stat-box">
-          <div class="box-value">100</div>
-          <div class="box-label">Тестових запитань</div>
+      <div class="celebration-stats exam-stats-row" style="display:grid; grid-template-columns:repeat(3, 1fr); gap:6px; width:100%; margin:16px 0; box-sizing:border-box;">
+        <div class="stat-box" style="min-width:0; padding:10px 4px; text-align:center; box-sizing:border-box; border-radius:14px; background:#f8fafc; border:1.5px solid var(--border-color);">
+          <div class="box-value" style="font-size:16px; font-weight:800; color:var(--beb-navy);">100</div>
+          <div class="box-label" style="font-size:9px; line-height:1.2; margin-top:3px; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Питань</div>
         </div>
-        <div class="stat-box">
-          <div class="box-value">100 хв</div>
-          <div class="box-label">Час на тест (1 хв / пит)</div>
+        <div class="stat-box" style="min-width:0; padding:10px 4px; text-align:center; box-sizing:border-box; border-radius:14px; background:#f8fafc; border:1.5px solid var(--border-color);">
+          <div class="box-value" style="font-size:16px; font-weight:800; color:var(--beb-navy);">100 хв</div>
+          <div class="box-label" style="font-size:9px; line-height:1.2; margin-top:3px; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Час (1 хв/пит)</div>
         </div>
-        <div class="stat-box">
-          <div class="box-value" style="color:#b45309;">80 / 100</div>
-          <div class="box-label">Прохідний бал (80%)</div>
+        <div class="stat-box" style="min-width:0; padding:10px 4px; text-align:center; box-sizing:border-box; border-radius:14px; background:#f8fafc; border:1.5px solid var(--border-color);">
+          <div class="box-value" style="font-size:16px; font-weight:800; color:#b45309;">80 / 100</div>
+          <div class="box-label" style="font-size:9px; line-height:1.2; margin-top:3px; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Поріг (80%)</div>
         </div>
       </div>
 
-      <div class="exam-actions-group">
-        <button class="btn-primary-duo exam-btn-main" onclick="startOfficialExam(100)">
+      <div class="exam-actions-group" style="display:flex; flex-direction:column; gap:10px; width:100%; box-sizing:border-box;">
+        <button class="btn-primary-duo exam-btn-main" style="width:100%; padding:14px 12px; font-size:14px; text-align:center; border-radius:14px; box-sizing:border-box;" onclick="startOfficialExam(100)">
           🏛️ Почати іспит (100 питань / 100 хв)
         </button>
-        <button class="btn-start-unit exam-btn-secondary" onclick="startOfficialExam(40)">
+        <button class="btn-start-unit exam-btn-secondary" style="width:100%; padding:13px 12px; font-size:14px; text-align:center; border-radius:14px; box-sizing:border-box; background:#475569;" onclick="startOfficialExam(40)">
           ⚡ Експрес-тренування (40 питань / 40 хв)
         </button>
       </div>
 
-      <p class="exam-start-note">
+      <p class="exam-start-note" style="color:#64748b; font-size:11px; margin-top:16px; text-align:center;">
         💡 Запитання вибираються методом випадкової комп'ютерної генерації з усіх 14 блоків законодавства для аналітиків БЕБ.
       </p>
+
+      <div style="margin-top:18px; text-align:center;">
+        <button onclick="forceAppRefresh()" style="background:none; border:none; color:#64748b; font-size:11px; text-decoration:underline; cursor:pointer; padding:6px 10px;">
+          🔄 Оновити версію (якщо інтерфейс застарів)
+        </button>
+      </div>
     </div>
   `;
+}
+
+// FORCE REFRESH / PURGE PWA CACHE
+async function forceAppRefresh() {
+  if (confirm("Очистити кеш та оновити додаток до останньої версії?")) {
+    try {
+      if ('serviceWorker' in navigator) {
+        const registrations = await navigator.serviceWorker.getRegistrations();
+        for (const reg of registrations) {
+          await reg.unregister();
+        }
+      }
+      if ('caches' in window) {
+        const keys = await caches.keys();
+        for (const key of keys) {
+          await caches.delete(key);
+        }
+      }
+    } catch (e) {
+      console.error('Purge error', e);
+    }
+    window.location.href = window.location.origin + window.location.pathname + '?reload=' + Date.now();
+  }
 }
 
 function startOfficialExam(count = 100) {

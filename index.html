@@ -17,7 +17,7 @@
   <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png">
   <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png">
 
-  <link rel="stylesheet" href="beb_quiz.css?v=9">
+  <link rel="stylesheet" href="beb_quiz.css?v=12">
 </head>
 <body>
 
@@ -91,16 +91,36 @@
   <div id="modal-root"></div>
 
   <!-- LOAD QUESTION DATA & APP LOGIC -->
-  <script src="questions_data.js?v=9"></script>
-  <script src="beb_quiz.js?v=9"></script>
+  <script src="questions_data.js?v=12"></script>
+  <script src="beb_quiz.js?v=12"></script>
 
-  <!-- PWA SERVICE WORKER REGISTRATION -->
+  <!-- PWA SERVICE WORKER REGISTRATION WITH INSTANT AUTO-UPDATE -->
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('sw.js')
-          .then(reg => console.log('[PWA] Service Worker registered successfully:', reg.scope))
-          .catch(err => console.log('[PWA] Service Worker registration failed:', err));
+        navigator.serviceWorker.register('sw.js?v=12')
+          .then(reg => {
+            console.log('[PWA] SW registered:', reg.scope);
+            reg.update();
+            reg.addEventListener('updatefound', () => {
+              const newWorker = reg.installing;
+              newWorker.addEventListener('statechange', () => {
+                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                  console.log('[PWA] New update ready, reloading...');
+                  window.location.reload();
+                }
+              });
+            });
+          })
+          .catch(err => console.log('[PWA] SW registration failed:', err));
+
+        let refreshing = false;
+        navigator.serviceWorker.addEventListener('controllerchange', () => {
+          if (!refreshing) {
+            refreshing = true;
+            window.location.reload();
+          }
+        });
       });
     }
   </script>
