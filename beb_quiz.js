@@ -130,6 +130,139 @@ class SoundFX {
 
 const sfx = new SoundFX();
 
+// DEFAULT MODULE DEFINITIONS (14 офіційних блоків тестування аналітиків БЕБ)
+const DEFAULT_BEB_MODULES = [
+  {
+    "id": "beb_law",
+    "title": "Закон «Про Бюро економічної безпеки України»",
+    "icon": "⚖️",
+    "badge": "БЕБ",
+    "desc": "Основи діяльності БЕБ, статус аналітиків і детективів, аналіз ризиків",
+    "match": "безпеки",
+    "color": "#1e3a8a"
+  },
+  {
+    "id": "tax_law",
+    "title": "Податковий кодекс та фінансові ризики",
+    "icon": "📊",
+    "badge": "БЕБ",
+    "desc": "Податки, збори, ЄСВ, бюджетні правила та запобігання схемному кредиту",
+    "match": "податков",
+    "color": "#2563eb"
+  },
+  {
+    "id": "constitution",
+    "title": "Конституція України",
+    "icon": "🏛️",
+    "badge": "БЕБ",
+    "desc": "Основи державного устрою, права людини, повноваження гілок влади",
+    "match": "конституція",
+    "color": "#059669"
+  },
+  {
+    "id": "anticorruption",
+    "title": "Закон «Про запобігання корупції»",
+    "icon": "🛡️",
+    "badge": "БЕБ",
+    "desc": "Конфлікт інтересів, е-декларування, доброчесність, статус викривачів",
+    "match": "корупці",
+    "color": "#d97706"
+  },
+  {
+    "id": "competition",
+    "title": "Захист економічної конкуренції",
+    "icon": "💼",
+    "badge": "БЕБ",
+    "desc": "Антимонопольне законодавство, антиконкурентні дії, концентрація, штрафи АМКУ",
+    "match": "конкуренц",
+    "color": "#7c3aed"
+  },
+  {
+    "id": "procurement",
+    "title": "Закон «Про публічні закупівлі»",
+    "icon": "🏢",
+    "badge": "БЕБ",
+    "desc": "Тендери, Prozorro, моніторинг закупівель та правопорушення у сфері торгів",
+    "match": "закупівл",
+    "color": "#0284c7"
+  },
+  {
+    "id": "banking",
+    "title": "Банки та банківська діяльність",
+    "icon": "🏦",
+    "badge": "БЕБ",
+    "desc": "Банківська таємниця, регулювання НБУ, розкриття фінансової інформації",
+    "match": "банк",
+    "color": "#0d9488"
+  },
+  {
+    "id": "finmon",
+    "title": "Фінансовий моніторинг та відмивання коштів",
+    "icon": "💸",
+    "badge": "БЕБ",
+    "desc": "ПВК/ФТ, підозрілі фінансові операції, суб'єкти первинного фінмоніторингу",
+    "match": "легалізаці",
+    "color": "#dc2626"
+  },
+  {
+    "id": "kpk",
+    "title": "Кримінальний процесуальний кодекс",
+    "icon": "🔍",
+    "badge": "БЕБ",
+    "desc": "Засади КПК, досудове розслідування, слідчі дії, докази та підозра",
+    "match": "процесуальн",
+    "color": "#4338ca"
+  },
+  {
+    "id": "kk",
+    "title": "Кримінальний кодекс України",
+    "icon": "🕵️",
+    "badge": "БЕБ",
+    "desc": "Злочини у сфері економіки (ст. 212, 209, 222), склад злочину, покарання",
+    "match": "кримінальний кодекс",
+    "color": "#b91c1c"
+  },
+  {
+    "id": "capital_markets",
+    "title": "Ринки капіталу та товарні ринки",
+    "icon": "📈",
+    "badge": "БЕБ",
+    "desc": "Цінні папери, фондовий ринок, товарні біржі",
+    "match": "ринки капіталу",
+    "color": "#16a34a"
+  },
+  {
+    "id": "budget",
+    "title": "Бюджетний кодекс України",
+    "icon": "💰",
+    "badge": "БЕБ",
+    "desc": "Бюджетний процес, міжбюджетні трансферти, цільове використання коштів",
+    "match": "бюджетн",
+    "color": "#ca8a04"
+  },
+  {
+    "id": "ord",
+    "title": "Оперативно-розшукова діяльність (ОРД)",
+    "icon": "🕵️‍♂️",
+    "badge": "БЕБ",
+    "desc": "Закон про ОРД, оперативно-розшукові справи, підстави та заходи",
+    "match": "розшуков",
+    "color": "#475569"
+  },
+  {
+    "id": "state_bodies",
+    "title": "Державне управління та доступ до інформації",
+    "icon": "📑",
+    "badge": "БЕБ",
+    "desc": "ЦОВВ, Кабмін, публічна інформація, захист персональних даних, звернення",
+    "match": "громадян|інформаці|виконавчої|міністрів|персональн",
+    "color": "#6366f1"
+  }
+];
+
+// Initialize window.BEB_MODULES immediately so views never render blank
+window.BEB_MODULES = (window.BEB_MODULES && window.BEB_MODULES.length > 0) ? window.BEB_MODULES : DEFAULT_BEB_MODULES;
+
 // APP STATE
 const STATE = {
   xp: 0,
@@ -356,7 +489,11 @@ function startCustomQuestionsQuiz(questionsList, title) {
 // START ALL REMAINING UNCOMPLETED QUESTIONS OF A MODULE
 function startModuleRemainingQuiz(moduleId) {
   const allQuestions = window.BEB_QUESTIONS || [];
-  const modInfo = (window.BEB_MODULES || []).find(m => m.id === moduleId);
+  if (allQuestions.length === 0) {
+    alert("База питань ще завантажується. Будь ласка, зачекайте 1-2 секунди...");
+    return;
+  }
+  const modInfo = (window.BEB_MODULES || DEFAULT_BEB_MODULES).find(m => m.id === moduleId);
   const remaining = allQuestions.filter(q => q.module === moduleId && !STATE.completedQuestions[q.id]);
 
   if (remaining.length === 0) {
@@ -370,16 +507,44 @@ function startModuleRemainingQuiz(moduleId) {
 
 // 1. PATH / MODULES VIEW
 function renderPathView(container) {
-  const modules = window.BEB_MODULES || [];
+  const modules = (window.BEB_MODULES && window.BEB_MODULES.length > 0) ? window.BEB_MODULES : DEFAULT_BEB_MODULES;
   const allQuestions = window.BEB_QUESTIONS || [];
+  const isLoading = allQuestions.length === 0;
+
+  // Auto-refresh when questions become available
+  if (isLoading && !window._bebQuestionsWatcher) {
+    window._bebQuestionsWatcher = setInterval(() => {
+      if (window.BEB_QUESTIONS && window.BEB_QUESTIONS.length > 0) {
+        clearInterval(window._bebQuestionsWatcher);
+        window._bebQuestionsWatcher = null;
+        if (STATE.currentView === 'path') {
+          const mainView = document.getElementById('main-view-container');
+          if (mainView) renderPathView(mainView);
+        }
+      }
+    }, 250);
+  }
 
   let html = `
     <div class="view-header">
       <h2>🏛️ Шлях підготовки аналітика БЕБ</h2>
       <p>Опановуйте законодавство за тематичними блоками в ігровому темпі або проходьте точковий залишок питань</p>
     </div>
-    <div class="modules-grid">
   `;
+
+  if (isLoading) {
+    html += `
+      <div style="background:#eff6ff; border:1px solid #bfdbfe; color:#1e40af; border-radius:14px; padding:12px 16px; margin-bottom:18px; display:flex; align-items:center; gap:12px; font-weight:600; font-size:13px;">
+        <span style="font-size:20px;">⏳</span>
+        <div>
+          <div>Завантаження офіційної бази питань БЕБ (838 тестових завдань)...</div>
+          <div style="font-size:11px; font-weight:400; color:#3b82f6; margin-top:2px;">Дані завантажуються в офлайн-пам'ять. Список оновиться автоматично за мить.</div>
+        </div>
+      </div>
+    `;
+  }
+
+  html += `<div class="modules-grid">`;
 
   modules.forEach(mod => {
     const modQuestions = allQuestions.filter(q => q.module === mod.id);
@@ -388,12 +553,13 @@ function renderPathView(container) {
     const uncompletedQ = totalQ - completedQ;
     const percent = totalQ > 0 ? Math.round((completedQ / totalQ) * 100) : 0;
     const isMastered = uncompletedQ === 0 && totalQ > 0;
+    const modColor = mod.color || '#2563eb';
 
     html += `
       <div class="module-card">
         <div class="module-top">
           <div class="module-icon-wrap">${mod.icon}</div>
-          <span class="module-badge" style="background:${mod.color}15; color:${mod.color}">${mod.badge}</span>
+          <span class="module-badge" style="background:${modColor}15; color:${modColor}">${mod.badge || 'БЕБ'}</span>
         </div>
         <div class="module-title">${mod.title}</div>
         <div class="module-desc">${mod.desc}</div>
@@ -403,17 +569,19 @@ function renderPathView(container) {
         <div class="module-bottom" style="flex-direction:column; align-items:stretch; gap:12px;">
           <div style="display:flex; justify-content:space-between; align-items:center;">
             <span class="module-stats">
-              ${isMastered 
-                ? '<strong style="color:#15803d;">🌟 Опановано 100%</strong>' 
-                : `${completedQ} / ${totalQ} питань (${percent}%)`}
+              ${isLoading 
+                ? '<span style="color:#64748b;">⏳ Завантаження...</span>'
+                : (isMastered 
+                    ? '<strong style="color:#15803d;">🌟 Опановано 100%</strong>' 
+                    : `${completedQ} / ${totalQ} питань (${percent}%)`)}
             </span>
-            ${!isMastered ? `
+            ${(!isMastered && !isLoading) ? `
               <span class="status-pill unseen" style="font-size:12px;">Залишок: <strong>${uncompletedQ}</strong></span>
             ` : ''}
           </div>
 
           <div class="module-actions-row" style="justify-content:flex-end;">
-            ${!isMastered ? `
+            ${(!isMastered && !isLoading) ? `
               <button class="btn-remaining-unit" title="Пройти всі ${uncompletedQ} питань, які ще не засвоєно" onclick="startModuleRemainingQuiz('${mod.id}')">
                 🎯 Залишок (${uncompletedQ})
               </button>
@@ -440,7 +608,11 @@ function startModuleQuiz(moduleId, count) {
   sfx.playClick();
 
   const allQuestions = window.BEB_QUESTIONS || [];
-  const modInfo = (window.BEB_MODULES || []).find(m => m.id === moduleId);
+  if (allQuestions.length === 0) {
+    alert("База питань ще завантажується. Будь ласка, зачекайте 1-2 секунди...");
+    return;
+  }
+  const modInfo = (window.BEB_MODULES || DEFAULT_BEB_MODULES).find(m => m.id === moduleId);
   let questions = allQuestions.filter(q => q.module === moduleId);
 
   // Пріоритет: спочатку невивчені
@@ -712,7 +884,7 @@ function showQuizResults() {
         </div>
       </div>
 
-      <div style="display:flex; justify-content:center; gap:16px; margin-top:24px; flex-wrap:wrap;">
+      <div class="results-actions-group">
         <button class="btn-primary-duo" onclick="switchView('path')">До списку тем</button>
         ${isExam ? `
           <button class="btn-primary-duo" style="background:#2563eb;" onclick="startOfficialExam(100)">Пройти іспит ще раз (100)</button>
@@ -727,17 +899,40 @@ function showQuizResults() {
 
 // 3. EXAM SIMULATION (100 питань / 100 хвилин / прохідний 80%)
 function renderExamStart(container) {
+  const allQuestions = window.BEB_QUESTIONS || [];
+  const isLoading = allQuestions.length === 0;
+
+  // Auto-refresh when questions become available
+  if (isLoading && !window._bebQuestionsWatcherExam) {
+    window._bebQuestionsWatcherExam = setInterval(() => {
+      if (window.BEB_QUESTIONS && window.BEB_QUESTIONS.length > 0) {
+        clearInterval(window._bebQuestionsWatcherExam);
+        window._bebQuestionsWatcherExam = null;
+        if (STATE.currentView === 'exam') {
+          const mainView = document.getElementById('main-view-container');
+          if (mainView) renderExamStart(mainView);
+        }
+      }
+    }, 250);
+  }
+
   container.innerHTML = `
-    <div class="quiz-screen" style="padding:40px; text-align:center;">
-      <div style="font-size:64px; margin-bottom:16px;">⏱️</div>
-      <h2 style="font-size:28px; font-weight:800; color:var(--beb-navy); margin-bottom:12px;">
+    <div class="quiz-screen exam-start-card">
+      <div class="exam-start-icon">⏱️</div>
+      <h2 class="exam-start-title">
         Офіційна симуляція тестування БЕБ
       </h2>
-      <p style="color:var(--text-muted); font-size:16px; max-width:640px; margin:0 auto 28px; line-height:1.5;">
+      <p class="exam-start-desc">
         Повна симуляція комп'ютерного іспиту Конкурсної комісії Бюро економічної безпеки України на знання законодавства (Наказ БЕБ № 378).
       </p>
 
-      <div class="celebration-stats" style="margin-bottom:32px;">
+      ${isLoading ? `
+        <div style="background:#eff6ff; border:1px solid #bfdbfe; color:#1e40af; border-radius:12px; padding:10px 14px; margin-bottom:16px; font-size:13px; font-weight:600;">
+          ⏳ База питань завантажується... Іспит буде доступний за мить.
+        </div>
+      ` : ''}
+
+      <div class="celebration-stats exam-stats-row">
         <div class="stat-box">
           <div class="box-value">100</div>
           <div class="box-label">Тестових запитань</div>
@@ -748,20 +943,20 @@ function renderExamStart(container) {
         </div>
         <div class="stat-box">
           <div class="box-value" style="color:#b45309;">80 / 100</div>
-          <div class="box-label">Офіційний прохідний бал (80%)</div>
+          <div class="box-label">Прохідний бал (80%)</div>
         </div>
       </div>
 
-      <div style="display:flex; justify-content:center; gap:16px; flex-wrap:wrap;">
-        <button class="btn-primary-duo" style="padding:16px 40px; font-size:18px;" onclick="startOfficialExam(100)">
-          🏛️ Почати офіційний іспит (100 питань / 100 хв)
+      <div class="exam-actions-group">
+        <button class="btn-primary-duo exam-btn-main" onclick="startOfficialExam(100)">
+          🏛️ Почати іспит (100 питань / 100 хв)
         </button>
-        <button class="btn-start-unit" style="background:#475569; padding:16px 28px; font-size:16px;" onclick="startOfficialExam(40)">
+        <button class="btn-start-unit exam-btn-secondary" onclick="startOfficialExam(40)">
           ⚡ Експрес-тренування (40 питань / 40 хв)
         </button>
       </div>
 
-      <p style="color:#64748b; font-size:13px; margin-top:24px;">
+      <p class="exam-start-note">
         💡 Запитання вибираються методом випадкової комп'ютерної генерації з усіх 14 блоків законодавства для аналітиків БЕБ.
       </p>
     </div>
@@ -778,6 +973,10 @@ function startOfficialExam(count = 100) {
   sfx.playClick();
 
   const allQuestions = window.BEB_QUESTIONS || [];
+  if (allQuestions.length === 0) {
+    alert("База питань ще завантажується. Будь ласка, зачекайте 1-2 секунди...");
+    return;
+  }
   const shuffled = [...allQuestions].sort(() => Math.random() - 0.5).slice(0, count);
 
   STATE.quiz = {
@@ -883,18 +1082,44 @@ function startMistakesDrill() {
 // 5. UNANSWERED VIEW (Залишок питань)
 function renderUnansweredView(container) {
   const allQuestions = window.BEB_QUESTIONS || [];
+  const isLoading = allQuestions.length === 0;
+
+  // Auto-refresh when questions become available
+  if (isLoading && !window._bebQuestionsWatcherUnans) {
+    window._bebQuestionsWatcherUnans = setInterval(() => {
+      if (window.BEB_QUESTIONS && window.BEB_QUESTIONS.length > 0) {
+        clearInterval(window._bebQuestionsWatcherUnans);
+        window._bebQuestionsWatcherUnans = null;
+        if (STATE.currentView === 'unanswered') {
+          const mainView = document.getElementById('main-view-container');
+          if (mainView) renderUnansweredView(mainView);
+        }
+      }
+    }, 250);
+  }
+
   const totalCount = allQuestions.length;
   const completedCount = allQuestions.filter(q => STATE.completedQuestions[q.id]).length;
   const remainingCount = totalCount - completedCount;
   const mistakesCount = STATE.mistakeBank.length;
   const percent = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
-  const modules = window.BEB_MODULES || [];
+  const modules = (window.BEB_MODULES && window.BEB_MODULES.length > 0) ? window.BEB_MODULES : DEFAULT_BEB_MODULES;
 
   let html = `
     <div class="view-header">
-      <h2>⏳ Залишок питань (${remainingCount} з ${totalCount})</h2>
+      <h2>⏳ Залишок питань (${isLoading ? 'Завантаження...' : `${remainingCount} з ${totalCount}`})</h2>
       <p>Огляд та проходження питань, які ви ще не засвоїли або які не траплялися в процесі тестування</p>
     </div>
+
+    ${isLoading ? `
+      <div style="background:#eff6ff; border:1px solid #bfdbfe; color:#1e40af; border-radius:14px; padding:12px 16px; margin-bottom:18px; display:flex; align-items:center; gap:12px; font-weight:600; font-size:13px;">
+        <span style="font-size:20px;">⏳</span>
+        <div>
+          <div>Завантаження офіційної бази питань БЕБ (838 тестових завдань)...</div>
+          <div style="font-size:11px; font-weight:400; color:#3b82f6; margin-top:2px;">Дані завантажуються в офлайн-пам'ять. Сторінка оновиться автоматично за мить.</div>
+        </div>
+      </div>
+    ` : ''}
 
     <div class="unanswered-hero">
       <div class="unanswered-hero-left">
@@ -985,6 +1210,10 @@ function renderUnansweredView(container) {
 
 function startRemainingGlobalQuiz(count) {
   const allQuestions = window.BEB_QUESTIONS || [];
+  if (allQuestions.length === 0) {
+    alert("База питань ще завантажується. Будь ласка, зачекайте 1-2 секунди...");
+    return;
+  }
   const remaining = allQuestions.filter(q => !STATE.completedQuestions[q.id]);
   if (remaining.length === 0) {
     alert("Усі 838 питань уже засвоєно!");
@@ -1005,8 +1234,12 @@ function openModuleQuestionsModal(moduleId, defaultFilter = null) {
   sfx.init();
   sfx.playClick();
 
-  modalState.moduleId = moduleId;
   const allQuestions = window.BEB_QUESTIONS || [];
+  if (allQuestions.length === 0) {
+    alert("База питань ще завантажується. Будь ласка, зачекайте 1-2 секунди...");
+    return;
+  }
+  modalState.moduleId = moduleId;
   const modQuestions = allQuestions.filter(q => q.module === moduleId);
 
   const completedCount = modQuestions.filter(q => STATE.completedQuestions[q.id]).length;
@@ -1684,6 +1917,19 @@ window.addEventListener('DOMContentLoaded', () => {
   loadState();
   updateHeaderStats();
   switchView('path');
+
+  // If questions are still loading/hydrating from cache or network, auto-refresh active view
+  if (!window.BEB_QUESTIONS || window.BEB_QUESTIONS.length === 0) {
+    const qInterval = setInterval(() => {
+      if (window.BEB_QUESTIONS && window.BEB_QUESTIONS.length > 0) {
+        clearInterval(qInterval);
+        const mainView = document.getElementById('main-view-container');
+        if (mainView && STATE.currentView === 'path') renderPathView(mainView);
+        else if (mainView && STATE.currentView === 'unanswered') renderUnansweredView(mainView);
+        else if (mainView && STATE.currentView === 'exam') renderExamStart(mainView);
+      }
+    }, 200);
+  }
 
   // Initial server sync
   syncWithServer(true);

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'beb-trainer-v1';
+const CACHE_NAME = 'beb-trainer-v2';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
@@ -49,7 +49,7 @@ self.addEventListener('fetch', (event) => {
 
   // Cache-first / Stale-While-Revalidate for app shell
   event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
+    caches.match(event.request, { ignoreSearch: true }).then((cachedResponse) => {
       if (cachedResponse) {
         // Fetch in background to update cache for next time
         fetch(event.request).then((networkResponse) => {
@@ -75,7 +75,7 @@ self.addEventListener('fetch', (event) => {
       }).catch(() => {
         // Offline fallback for navigation requests
         if (event.request.mode === 'navigate') {
-          return caches.match('./index.html');
+          return caches.match('./index.html', { ignoreSearch: true });
         }
       });
     })
