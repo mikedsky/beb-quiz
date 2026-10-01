@@ -1,0 +1,25 @@
+{
+  "name": "БЕБ Тренажер — Підготовка до конкурсу",
+  "short_name": "БЕБ Тести",
+  "description": "Автономний тренажер для підготовки до конкурсу в Бюро економічної безпеки України (Аналітики / Детективи)",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0d2847",
+  "theme_color": "#0d2847",
+  "lang": "uk",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>БЕБ ТРЕНАЖЕР — Підготовка до конкурсу (Аналітик / Детектив)</title>
+  
+  <!-- PWA & MOBILE WEB APP -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0d2847">
+  
+  <!-- APPLE IOS PWA SUPPORT -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="БЕБ Тести">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png">
+  <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png">
+
+  <link rel="stylesheet" href="beb_quiz.css">
+</head>
+<body>
+
+  <!-- TOP NAVBAR -->
+  <header class="navbar">
+    <div class="brand" onclick="switchView('path')">
+      <div class="brand-logo">🛡️</div>
+      <div class="brand-text">
+        <h1>БЕБ ТРЕНАЖЕР</h1>
+        <span class="brand-sub">Бюро економічної безпеки України</span>
+      </div>
+    </div>
+
+    <div class="nav-stats">
+      <div class="stat-pill phone-pill" id="stat-phone-sync" onclick="openPhoneSyncModal()" title="Відкрити на телефоні (QR-код та синхронізація)">
+        📱 <span class="phone-pill-text">На телефон</span> <span class="sync-dot" id="sync-dot-status" title="Статус синхронізації"></span>
+      </div>
+      <div class="stat-pill streak" id="stat-streak" title="Ударний режим (дні поспіль)">🔥 1 дн.</div>
+      <div class="stat-pill xp" id="stat-xp" title="Очки досвіду XP">⚡ 0 XP</div>
+      <div class="stat-pill hearts" id="stat-hearts" title="Життя (клікніть для безліміту)">❤️ 5/5</div>
+      <div class="stat-pill" id="stat-sound-toggle" title="Перемикач звуку">🔊</div>
+    </div>
+  </header>
+
+  <!-- APP CONTAINER -->
+  <div class="app-container">
+    
+    <!-- SIDEBAR NAVIGATION (DUOLINGO STYLE / BOTTOM BAR ON MOBILE) -->
+    <aside class="sidebar" id="app-sidebar">
+      <button class="nav-btn active" data-view="path" onclick="switchView('path')">
+        <span class="icon">🗺️</span>
+        <span class="nav-label">Шлях</span>
+      </button>
+
+      <button class="nav-btn" data-view="exam" onclick="switchView('exam')">
+        <span class="icon">⏱️</span>
+        <span class="nav-label">Іспит</span>
+      </button>
+
+      <button class="nav-btn" data-view="mistakes" onclick="switchView('mistakes')">
+        <span class="icon">🎯</span>
+        <span class="nav-label">Помилки</span>
+      </button>
+
+      <button class="nav-btn" data-view="unanswered" onclick="switchView('unanswered')">
+        <span class="icon">⏳</span>
+        <span class="nav-label">Залишок</span>
+      </button>
+
+      <button class="nav-btn" data-view="dict" onclick="switchView('dict')">
+        <span class="icon">📚</span>
+        <span class="nav-label">Пошук</span>
+      </button>
+
+      <!-- ROLE STATUS BADGE -->
+      <div class="role-badge">
+        <div class="role-icon">📊</div>
+        <div class="role-title">Кандидат в Аналітики БЕБ</div>
+        <div class="role-sub">ТУ у Дніпропетровській області</div>
+      </div>
+    </aside>
+
+    <!-- MAIN VIEW CONTAINER -->
+    <main class="main-view" id="main-view-container">
+      <!-- Dynamic content rendered by JS -->
+    </main>
+
+  </div>
+
+  <!-- MODAL ROOT CONTAINER -->
+  <div id="modal-root"></div>
+
+  <!-- LOAD QUESTION DATA & APP LOGIC -->
+  <script src="questions_data.js?v=8"></script>
+  <script src="beb_quiz.js?v=8"></script>
+
+  <!-- PWA SERVICE WORKER REGISTRATION -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js')
+          .then(reg => console.log('[PWA] Service Worker registered successfully:', reg.scope))
+          .catch(err => console.log('[PWA] Service Worker registration failed:', err));
+      });
+    }
+  </script>
+</body>
+</html>
