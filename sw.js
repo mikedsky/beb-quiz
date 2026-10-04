@@ -1,4 +1,4 @@
-const CACHE_NAME = 'beb-trainer-v5';
+const CACHE_NAME = 'beb-trainer-v6';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
@@ -15,7 +15,7 @@ self.addEventListener('install', (event) => {
   self.skipWaiting();
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      console.log('[SW v5] Pre-caching offline assets');
+      console.log('[SW v6] Pre-caching offline assets');
       return cache.addAll(ASSETS_TO_CACHE);
     })
   );
@@ -27,7 +27,7 @@ self.addEventListener('activate', (event) => {
     caches.keys().then((keys) => {
       return Promise.all(
         keys.filter((key) => key !== CACHE_NAME).map((key) => {
-          console.log('[SW v5] Deleting old cache:', key);
+          console.log('[SW v6] Deleting old cache:', key);
           return caches.delete(key);
         })
       );
