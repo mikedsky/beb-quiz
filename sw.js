@@ -1,4 +1,4 @@
-const CACHE_NAME = 'beb-trainer-v6';
+const CACHE_NAME = 'beb-trainer-v7';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
